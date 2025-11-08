@@ -2,6 +2,7 @@
 {
     public class QrCode : BaseEntity
     {
+        public QrCode() { }
         public int MemorialId { get; set; }
         public Memorial Memorial { get; set; } = null!;
 

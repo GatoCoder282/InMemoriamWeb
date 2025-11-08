@@ -4,6 +4,7 @@ namespace InMemoriam.Core.Entities
 {
     public class MediaAsset : BaseEntity
     {
+       public MediaAsset() { }
         public int MemorialId { get; set; }
         public Memorial Memorial { get; set; } = null!;
 

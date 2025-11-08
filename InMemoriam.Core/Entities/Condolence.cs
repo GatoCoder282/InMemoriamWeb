@@ -2,6 +2,7 @@
 {
     public class Condolence : BaseEntity
     {
+        public Condolence() { }
         public int TributeId { get; set; }
         public Tribute Tribute { get; set; } = null!;
 

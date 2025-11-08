@@ -4,6 +4,7 @@ namespace InMemoriam.Core.Entities
 {
     public class Memorial : BaseEntity
     {
+        public Memorial() { }
         public string Slug { get; set; } = null!;
         public string FullName { get; set; } = null!;
         public DateOnly? BirthDate { get; set; }

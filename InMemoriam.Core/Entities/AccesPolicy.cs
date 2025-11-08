@@ -4,6 +4,7 @@ namespace InMemoriam.Core.Entities
 {
     public class AccessPolicy : BaseEntity
     {
+        public AccessPolicy() { }
         public int MemorialId { get; set; }
         public Memorial Memorial { get; set; } = null!;
 

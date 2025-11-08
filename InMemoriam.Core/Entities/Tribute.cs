@@ -2,6 +2,7 @@
 {
     public class Tribute : BaseEntity
     {
+        public Tribute() { }
         public int MemorialId { get; set; }
         public Memorial Memorial { get; set; } = null!;
 
