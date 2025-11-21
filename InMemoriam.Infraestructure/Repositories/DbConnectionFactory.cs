@@ -16,11 +16,12 @@ namespace InMemoriam.Infraestructure.Repositories
         public DbConnectionFactory(IConfiguration config)
         {
             _config = config;
-            _sqlConn = _config.GetConnectionString("ConnectionSqlServer") ?? string.Empty;
-            _mySqlConn = _config.GetConnectionString("ConnectionMySql") ?? string.Empty;
+            // Leer las cadenas con las claves presentes en appsettings.json
+            _sqlConn = _config.GetConnectionString("SqlServer") ?? string.Empty;
+            _mySqlConn = _config.GetConnectionString("MySql") ?? string.Empty;
 
-            var providerStr = _config.GetSection("DatabaseProvider").Value
-                ?? "SqlServer";
+            // Leer provider desde la sección "Database:Provider" (coincide con Program.cs)
+            var providerStr = _config.GetValue<string>("Database:Provider") ?? "SqlServer";
 
             Provider = providerStr.Equals("MySql",
                 StringComparison.OrdinalIgnoreCase)

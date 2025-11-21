@@ -3,7 +3,7 @@
     public static class MediaAssetQueries
     {
         public const string GetById = @"
-            SELECT Id, MemorialId, Title, Description, Kind, StorageUri, SizeBytes, Checksum, Date, Tags, IsActive, CreatedAt, UpdatedAt
+            SELECT Id, MemorialId, Title, Description, Kind, StorageKey, SizeBytes, Checksum, Date, Tags, IsActive, CreatedAt, UpdatedAt
             FROM MediaAssets WHERE Id=@Id;";
 
         public const string CountPaged = @"
@@ -15,7 +15,7 @@
               AND (@Kind IS NULL OR Kind = @Kind);";
 
         public const string GetPaged = @"
-            SELECT Id, MemorialId, Title, Description, Kind, StorageUri, SizeBytes, Checksum, Date, Tags, IsActive, CreatedAt, UpdatedAt
+            SELECT Id, MemorialId, Title, Description, Kind, StorageKey, SizeBytes, Checksum, Date, Tags, IsActive, CreatedAt, UpdatedAt
             FROM MediaAssets
             WHERE MemorialId=@MemorialId
               AND (@Search IS NULL OR Title LIKE CONCAT('%', @Search, '%') OR Description LIKE CONCAT('%', @Search, '%'))

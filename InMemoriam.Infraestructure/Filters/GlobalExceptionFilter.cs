@@ -2,11 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InMemoriam.Infraestructure.Filters
 {
@@ -14,21 +10,35 @@ namespace InMemoriam.Infraestructure.Filters
     {
         public void OnException(ExceptionContext context)
         {
-            var exception = (BusinessException)context.Exception;
-            var validation = new
+            // Manejo específico de BusinessException
+            if (context.Exception is BusinessException be)
             {
-                Status = 400,
-                Title = "Bad Request",
-                Detail = exception.Message
+                var validation = new
+                {
+                    Status = 400,
+                    Title = "Bad Request",
+                    Detail = be.Message
+                };
+
+                context.Result = new BadRequestObjectResult(new { errors = new[] { validation } });
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.ExceptionHandled = true;
+                return;
+            }
+
+            // Manejo genérico para otras excepciones (evita InvalidCastException)
+            var err = new
+            {
+                Status = 500,
+                Title = "Internal Server Error",
+                Detail = context.Exception.Message
             };
 
-            var json = new
+            context.Result = new ObjectResult(new { errors = new[] { err } })
             {
-                errors = new[] { validation }
+                StatusCode = (int)HttpStatusCode.InternalServerError
             };
 
-            context.Result = new BadRequestObjectResult(json);
-            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.ExceptionHandled = true;
         }
     }

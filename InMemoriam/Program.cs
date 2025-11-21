@@ -6,6 +6,7 @@ using InMemoriam.Infraestructure.Filters;
 using InMemoriam.Infraestructure.Mappings;
 using InMemoriam.Infraestructure.Repositories;
 using InMemoriam.Infraestructure.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,8 +78,12 @@ namespace InMemoriam
                 o.UseSqlServer(cfg.GetConnectionString("SqlServer")));
             }
 
+            // Registro de servicio de validación y validators
             builder.Services.AddScoped<IValidatorService, ValidatorService>();
             builder.Services.AddScoped<ValidationFilter>();
+
+            // Registro de validators (necesita FluentValidation.AspNetCore NuGet)
+            builder.Services.AddValidatorsFromAssemblyContaining<MemorialDtoValidator>();
 
             // Dapper infra
             builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
