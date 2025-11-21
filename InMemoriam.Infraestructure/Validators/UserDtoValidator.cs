@@ -29,6 +29,10 @@ namespace InMemoriam.Infraestructure.Validators
             RuleFor(x => x.DateOfBirth)
                 .NotEmpty().WithMessage("La fecha de nacimiento es requerida")
                 .Must(BeValidDate).WithMessage("Formato de fecha inválido. Use dd-MM-yyyy");
+
+            RuleFor(x => x.Password)
+                .MinimumLength(8).When(x => !string.IsNullOrWhiteSpace(x.Password))
+                .WithMessage("La contraseña debe tener al menos 8 caracteres");
         }
 
         private bool BeValidDate(string value)

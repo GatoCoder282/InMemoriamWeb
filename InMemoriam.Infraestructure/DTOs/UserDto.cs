@@ -17,5 +17,8 @@ namespace InMemoriam.Infraestructure.DTOs
 
         public string? Telephone { get; set; }
         public bool IsActive { get; set; }
+
+        // Nuevo: sólo para entrada (creación/actualización). No se mapea automáticamente a PasswordHash.
+        public string? Password { get; set; }
     }
 }

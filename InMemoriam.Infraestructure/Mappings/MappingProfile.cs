@@ -11,7 +11,9 @@ namespace InMemoriam.Infraestructure.Mappings
             // Habilita mapeo en ambas direcciones (User <-> UserDto)
             CreateMap<User, UserDto>()
                 .ForMember(d => d.DateOfBirth, o => o.Ignore())
-                .ReverseMap();
+                .ReverseMap()
+                // Evitar mapear Password (DTO) directamente a PasswordHash (se hace manualmente)
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
             CreateMap<Memorial, MemorialDto>()
                 .ForMember(d => d.BirthDate, o => o.MapFrom(s => s.BirthDate.HasValue ? s.BirthDate.Value.ToString("yyyy-MM-dd") : null))

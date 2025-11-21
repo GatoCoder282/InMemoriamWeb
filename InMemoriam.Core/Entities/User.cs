@@ -8,6 +8,8 @@
         public string Email { get; set; } = null!;
         public string? Telephone { get; set; }
 
+        public string? PasswordHash { get; set; }
+
         public ICollection<AccessPolicy> AccessPolicies { get; set; } = new List<AccessPolicy>();
     }
 }

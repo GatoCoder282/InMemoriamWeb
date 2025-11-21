@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BCrypt.Net;
 using InMemoriam.Core.Interfaces;
 using InMemoriam.Infraestructure.DTOs;
 using InMemoriam.Infraestructure.Validators;
@@ -62,7 +63,14 @@ namespace InMemoriam.Controllers
             var vr = await _validator.ValidateAsync(dto);
             if (!vr.IsValid) return BadRequest(new { Message = "Error de validación", Errors = vr.Errors });
 
+            if (string.IsNullOrWhiteSpace(dto.Password))
+                return BadRequest(ApiResponse<object>.Fail(new[] { "Password es requerido para creación" }));
+
             var entity = _mapper.Map<InMemoriam.Core.Entities.User>(dto);
+
+            // Hashear contraseña con BCrypt (cost por defecto)
+            entity.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+
             var created = await _service.CreateAsync(entity);
             var outDto = _mapper.Map<UserDto>(created);
 
@@ -85,6 +93,12 @@ namespace InMemoriam.Controllers
 
             var entity = _mapper.Map<InMemoriam.Core.Entities.User>(dto);
             entity.Id = id;
+
+            // Si envían nueva contraseña la actualizamos (hash)
+            if (!string.IsNullOrWhiteSpace(dto.Password))
+            {
+                entity.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            }
 
             await _service.UpdateAsync(entity);
             var outDto = _mapper.Map<UserDto>(entity);
