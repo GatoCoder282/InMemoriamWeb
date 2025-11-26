@@ -5,18 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InMemoriam.Infraestructure.Data
 {
     public partial class AppDbContext : DbContext
     {
-        public AppDbContext()
-        {
-
-        }
+        public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt) { }
 
         public DbSet<User> Users => Set<User>();
@@ -27,6 +21,10 @@ namespace InMemoriam.Infraestructure.Data
         public DbSet<AccessPolicy> AccessPolicies => Set<AccessPolicy>();
         public DbSet<QrCode> QrCodes => Set<QrCode>();
         public DbSet<FamilyGroup> FamilyGroups => Set<FamilyGroup>();
+
+        // New DbSets
+        public DbSet<MemorialMember> MemorialMembers => Set<MemorialMember>();
+        public DbSet<Invitation> Invitations => Set<Invitation>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

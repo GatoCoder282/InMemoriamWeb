@@ -25,6 +25,22 @@ namespace InMemoriam.Infraestructure.Mappings
                 .ForMember(d => d.Date, o => o.MapFrom(s => s.Date.ToString("yyyy-MM-dd")))
                 .ForMember(d => d.Kind, o => o.MapFrom(s => s.Kind.ToString()))
                 .ReverseMap();
+
+            // Nuevos mapeos
+            CreateMap<Invitation, InvitationDto>()
+                .ForMember(d => d.ExpiresAt, o => o.MapFrom(s => s.ExpiresAt.HasValue ? s.ExpiresAt.Value.ToString("o") : null))
+                .ForMember(d => d.AcceptedAt, o => o.MapFrom(s => s.AcceptedAt.HasValue ? s.AcceptedAt.Value.ToString("o") : null))
+                .ReverseMap();
+
+            CreateMap<InvitationCreateDto, Invitation>()
+                .ForMember(d => d.Token, o => o.Ignore())
+                .ForMember(d => d.Status, o => o.Ignore());
+
+            CreateMap<MemorialMember, MemorialMemberDto>()
+                .ForMember(d => d.Role, o => o.MapFrom(s => s.Role.ToString()))
+                .ForMember(d => d.Status, o => o.MapFrom(s => s.Status.ToString()))
+                .ForMember(d => d.JoinedAt, o => o.MapFrom(s => s.JoinedAt.ToString("o")))
+                .ReverseMap();
         }
     }
 }

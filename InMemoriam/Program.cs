@@ -105,11 +105,17 @@ namespace InMemoriam
             builder.Services.AddScoped<IMediaAssetRepository, MediaAssetRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IInvitationRepository, InvitationRepository>();
+            builder.Services.AddScoped<IMemorialMemberRepository, MemorialMemberRepository>();
+
 
             // Services
             builder.Services.AddScoped<IMemorialService, MemorialService>();
             builder.Services.AddScoped<IMediaAssetService, MediaAssetService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IInvitationService, InvitationService>();
+            builder.Services.AddScoped<IMemorialMemberService, MemorialMemberService>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
 
             // ------- JWT Authentication -------
             var issuer = cfg["Authentication:Issuer"];
