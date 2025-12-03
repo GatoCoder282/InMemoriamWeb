@@ -1,4 +1,5 @@
 ﻿using InMemoriam.Core.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InMemoriam.Core.Entities
 {
@@ -11,7 +12,26 @@ namespace InMemoriam.Core.Entities
         public DateOnly? DeathDate { get; set; }
         public MemorialVisibility Visibility { get; set; } = MemorialVisibility.Private;
 
-        public int OwnerUserId { get; set; }
+        // único campo de almacenamiento en memoria
+        private int _ownerId;
+
+        // Propiedad que usa tu API / DTO (OwnerUserId)
+        [Column("OwnerUserId")]
+        public int OwnerUserId
+        {
+            get => _ownerId;
+            set => _ownerId = value;
+        }
+
+        // Propiedad usada por la relación/clave foránea en el modelo EF (OwnerId)
+        [ForeignKey(nameof(Owner))]
+        [Column("OwnerId")]
+        public int OwnerId
+        {
+            get => _ownerId;
+            set => _ownerId = value;
+        }
+
         public User Owner { get; set; } = null!;
 
         public ICollection<MediaAsset> Media { get; set; } = new List<MediaAsset>();

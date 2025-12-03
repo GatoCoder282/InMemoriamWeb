@@ -37,6 +37,8 @@ namespace InMemoriam.Core.Services
             var todayCount = await _memRepo.CountByOwnerToday(e.OwnerUserId, DateTime.UtcNow);
             if (todayCount >= 50) throw new BusinessException("Se alcanzó el máximo de memoriales permitidos hoy");
 
+            e.IsActive = true;
+
             await _memRepo.Add(e);
             await _uow.SaveChangesAsync();
             return e;

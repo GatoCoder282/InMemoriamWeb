@@ -41,7 +41,7 @@ namespace InMemoriam.Infraestructure.Repositories
             if (_efTx != null) return _efTx.GetDbTransaction();
             _efTx = await _context.Database.BeginTransactionAsync();
             var conn = _context.Database.GetDbConnection();
-            await conn.OpenAsync();
+           
             _dapper.SetAmbientConnection(conn, _efTx.GetDbTransaction());
             return _efTx.GetDbTransaction();
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InMemoriam.Infraestructure.DTOs
 {
-    public class MediaAssetDto
+    public class    MediaAssetDto
     {
         public int Id { get; set; }
         public int MemorialId { get; set; }

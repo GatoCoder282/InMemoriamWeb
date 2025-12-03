@@ -22,21 +22,16 @@ namespace InMemoriam
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            DapperTypeHandlerRegistration.Register();
-
             var cfg = builder.Configuration;
-
-            builder.Configuration.Sources.Clear();
-            builder.Configuration
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
-                    optional: true, reloadOnChange: true);
 
             // Cargar user secrets en desarrollo (opcional)
             if (builder.Environment.IsDevelopment())
             {
                 builder.Configuration.AddUserSecrets<Program>();
             }
+
+            // Registrar handlers de Dapper para DateOnly (importante antes de usar Dapper)
+            DapperTypeHandlerRegistration.Register();
 
             // MVC + filtros globales
             builder.Services.AddControllers(options =>
@@ -116,7 +111,6 @@ namespace InMemoriam
             builder.Services.AddScoped<IInvitationRepository, InvitationRepository>();
             builder.Services.AddScoped<IMemorialMemberRepository, MemorialMemberRepository>();
 
-
             // Services
             builder.Services.AddScoped<IMemorialService, MemorialService>();
             builder.Services.AddScoped<IMediaAssetService, MediaAssetService>();
@@ -132,6 +126,10 @@ namespace InMemoriam
 
             if (string.IsNullOrWhiteSpace(secret) || secret.Length < 32)
             {
+                if (builder.Environment.IsProduction())
+                {
+                    throw new InvalidOperationException("Authentication:SecretKey ausente o insegura en Production. Use secrets/variables de entorno.");
+                }
                 Console.WriteLine("Warning: Authentication:SecretKey ausente o débil. Use secrets en desarrollo o variables de entorno en producción.");
             }
 
@@ -169,6 +167,7 @@ namespace InMemoriam
 
             app.UseHttpsRedirection();
 
+            // Añadir autenticación antes de autorización
             app.UseAuthentication();
             app.UseAuthorization();
 

@@ -10,6 +10,9 @@
 
         public string? PasswordHash { get; set; }
 
+        public DateOnly? DateOfBirth { get; set; }
+
+
         public ICollection<AccessPolicy> AccessPolicies { get; set; } = new List<AccessPolicy>();
     }
 }
