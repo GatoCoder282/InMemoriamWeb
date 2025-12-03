@@ -30,7 +30,8 @@ namespace InMemoriam
             builder.Configuration
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
-                    optional: true, reloadOnChange: true);
+                    optional: true, reloadOnChange: true)
+             .AddEnvironmentVariables();
 
             // Cargar user secrets en desarrollo (opcional)
             if (builder.Environment.IsDevelopment())
